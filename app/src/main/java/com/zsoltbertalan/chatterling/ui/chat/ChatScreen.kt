@@ -13,10 +13,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.automirrored.filled.Send
 import androidx.compose.material.icons.filled.Face
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.Icon
@@ -27,8 +27,10 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
@@ -45,8 +47,6 @@ import com.zsoltbertalan.chatterling.design.ChatterlingTypography
 import com.zsoltbertalan.chatterling.design.Colors
 import com.zsoltbertalan.chatterling.domain.model.ChatElement
 import com.zsoltbertalan.chatterling.testhelper.ChatMessageMother
-import com.zsoltbertalan.chatterling.ui.chat.ChatStore.SideEffect.Initial
-import com.zsoltbertalan.chatterling.ui.chat.ChatStore.SideEffect.ShowToast
 import com.zsoltbertalan.chatterling.ui.defaultChatExecutor
 
 @Composable
@@ -54,20 +54,29 @@ fun ChatScreen(component: ChatComp) {
 
 	val model by component.state.subscribeAsState()
 
-	val sideEffect by component.sideEffects.collectAsState(Initial)
-
 	BackHandler(onBack = { component.onBackClicked() })
 
-	ChatScaffold(component, model, sideEffect)
+	ChatScaffold(component, model)
 
 }
 
 @Composable
 private fun ChatScaffold(
 	component: ChatComp,
-	model: ChatStore.State,
-	sideEffect: ChatStore.SideEffect
+	model: ChatStore.State
 ) {
+
+	val listState = rememberLazyListState()
+	val itemsCount by remember {
+		derivedStateOf { listState.layoutInfo.totalItemsCount }
+	}
+
+	LaunchedEffect(itemsCount) {
+		if(listState.layoutInfo.totalItemsCount > 0) {
+			listState.scrollToItem(itemsCount - 1)
+		}
+	}
+
 	Scaffold(
 		topBar = {
 			TopAppBar(
@@ -121,6 +130,7 @@ private fun ChatScaffold(
 		if (model.error == null) {
 			Column {
 				LazyColumn(
+					state = listState,
 					modifier = Modifier
 						.weight(1.0f)
 						.fillMaxWidth(1f)
@@ -156,9 +166,6 @@ private fun ChatScaffold(
 		} else {
 			ErrorView(innerPadding)
 		}
-		if (sideEffect == ShowToast) {
-			//show toast or something else
-		}
 	}
 }
 
@@ -190,8 +197,7 @@ fun ChatScreenPreview() {
 	val componentContext = DefaultComponentContext(lifecycle = LifecycleRegistry())
 	ChatScaffold(
 		ChatComponent(componentContext, defaultChatExecutor(), {}, {}),
-		ChatStore.State(chat = ChatMessageMother.createChatMessageList(1711041850594L)),
-		Initial
+		ChatStore.State(chat = ChatMessageMother.createChatMessageList(1711041850594L))
 	)
 }
 
@@ -204,7 +210,6 @@ fun ChatScreenErrorPreview() {
 		ChatStore.State(
 			chat = ChatMessageMother.createChatMessageList(1711041850594L),
 			error = RuntimeException("Something went wrong")
-		),
-		Initial
+		)
 	)
 }
