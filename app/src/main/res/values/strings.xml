@@ -1,0 +1,4 @@
+<resources>
+	<string name="app_name">Chatterling</string>
+	<string name="chat_send_message">Send</string>
+</resources>
