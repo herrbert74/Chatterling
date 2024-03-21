@@ -21,7 +21,7 @@ import com.zsoltbertalan.chatterling.design.Colors
 import com.zsoltbertalan.chatterling.domain.model.ChatElement.ChatMessage
 
 @Composable
-fun ChatMessageRow(chatMessage: ChatMessage, onItemClicked: (ChatMessage) -> Unit, isTailed: Boolean = false) {
+fun ChatMessageRow(chatMessage: ChatMessage, onItemClicked: (ChatMessage) -> Unit) {
 
 	val tailedRoundedCornerShape = RoundedCornerShape(16.dp, 16.dp, 16.dp, 2.dp)
 	Box(
@@ -34,7 +34,7 @@ fun ChatMessageRow(chatMessage: ChatMessage, onItemClicked: (ChatMessage) -> Uni
 			.width(IntrinsicSize.Max)
 			.background(
 				color = Colors.surfaceContainer,
-				shape = if (isTailed) tailedRoundedCornerShape else RoundedCornerShape(16.dp)
+				shape = if (chatMessage.isTailed) tailedRoundedCornerShape else RoundedCornerShape(16.dp)
 			)
 			.padding(vertical = smallDimensions.marginNormal, horizontal = smallDimensions.marginLarge)
 			.testTag("ChatRow")
@@ -74,6 +74,6 @@ fun ChatMessageRowLongPreview() {
 @Composable
 fun TailedChatMessageRowPreview() {
 	ChatMessageRow(
-		ChatMessage(text = "Not long text"), {}, true,
+		ChatMessage(text = "Not long text"), {},
 	)
 }

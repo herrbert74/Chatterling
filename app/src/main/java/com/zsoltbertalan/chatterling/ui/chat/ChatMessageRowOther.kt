@@ -28,7 +28,6 @@ fun ChatMessageRowOther(
 	modifier: Modifier = Modifier,
 	chatMessage: ChatMessage,
 	onItemClicked: (ChatMessage) -> Unit,
-	isTailed: Boolean = false
 ) {
 
 	val tailedRoundedCornerShape = RoundedCornerShape(16.dp, 16.dp, 2.dp, 16.dp)
@@ -48,7 +47,7 @@ fun ChatMessageRowOther(
 				.align(Alignment.CenterEnd)
 				.background(
 					color = Colors.primary,
-					shape = if (isTailed) tailedRoundedCornerShape else RoundedCornerShape(16.dp)
+					shape = if (chatMessage.isTailed) tailedRoundedCornerShape else RoundedCornerShape(16.dp)
 				)
 				.padding(vertical = smallDimensions.marginNormal, horizontal = smallDimensions.marginLarge)
 				.testTag("ChatRow")
@@ -98,7 +97,7 @@ fun TailedChatMessageRowOtherPreview() {
 	Column {
 		ChatMessageRowOther(
 			Modifier.align(Alignment.End),
-			ChatMessage(text = "Not long text"), {}, true,
+			ChatMessage(text = "Not long text"), {},
 		)
 	}
 }

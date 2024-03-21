@@ -2,13 +2,11 @@ package com.zsoltbertalan.chatterling.ui.chat
 
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.value.Value
-import com.arkivanov.mvikotlin.extensions.coroutines.labels
 import com.arkivanov.mvikotlin.logging.store.LoggingStoreFactory
 import com.arkivanov.mvikotlin.main.store.DefaultStoreFactory
 import com.zsoltbertalan.chatterling.domain.model.ChatElement.ChatMessage
 import com.zsoltbertalan.chatterling.ext.asValue
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.launch
 
@@ -21,8 +19,6 @@ interface ChatComp {
 	fun onBackClicked()
 
 	val state: Value<ChatStore.State>
-
-	val sideEffects: Flow<ChatStore.SideEffect>
 
 	sealed class Output {
 		data class Selected(val chatMessage: ChatMessage) : Output()
@@ -59,8 +55,5 @@ class ChatComponent(
 
 	override val state: Value<ChatStore.State>
 		get() = chatStore.asValue()
-
-	override val sideEffects: Flow<ChatStore.SideEffect>
-		get() = chatStore.labels
 
 }

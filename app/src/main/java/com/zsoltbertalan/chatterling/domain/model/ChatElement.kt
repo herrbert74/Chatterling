@@ -12,6 +12,7 @@ sealed class ChatElement : Parcelable {
 		val text: String = "",
 		val timestamp: Long = 0L, //milliseconds
 		val isReceivedMessage: Boolean = false,
+		val isTailed:Boolean = false,
 	) : ChatElement(), Parcelable
 
 	@Parcelize
