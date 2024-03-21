@@ -2,7 +2,9 @@ package com.zsoltbertalan.chatterling.ui.chat
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -11,8 +13,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.Send
+import androidx.compose.material.icons.filled.Face
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -29,11 +34,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.DefaultComponentContext
 import com.arkivanov.decompose.extensions.compose.jetbrains.subscribeAsState
 import com.arkivanov.essenty.lifecycle.LifecycleRegistry
+import com.zsoltbertalan.chatterling.R
 import com.zsoltbertalan.chatterling.design.ChatterlingTypography
 import com.zsoltbertalan.chatterling.design.Colors
 import com.zsoltbertalan.chatterling.domain.model.ChatElement
@@ -85,8 +92,19 @@ private fun ChatScaffold(
 				},
 				title = {
 					Row {
-						Text("Sarah ")
-						Text("Sarah2")
+						Box(
+							modifier = Modifier
+								.padding(end = 4.dp)
+								.background(Colors.primary, CircleShape)
+						) {
+							Icon(
+								modifier = Modifier.padding(4.dp),
+								imageVector = Icons.Default.Face,
+								contentDescription = stringResource(id = R.string.avatar),
+								tint = Colors.onPrimary
+							)
+						}
+						Text("Sarah")
 					}
 				},
 				actions = {
@@ -114,7 +132,7 @@ private fun ChatScaffold(
 						) { index ->
 							val chatElement = model.chat[index]
 							if (chatElement is ChatElement.ChatMessage) {
-								if(chatElement.isReceivedMessage){
+								if (chatElement.isReceivedMessage) {
 									ChatMessageRowOther(
 										Modifier.align(Alignment.End),
 										chatMessage = chatElement,
