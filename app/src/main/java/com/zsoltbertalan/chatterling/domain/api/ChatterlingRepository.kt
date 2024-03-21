@@ -5,9 +5,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface ChatterlingRepository {
 
-	suspend fun sendMessage(message: String)
-
-	suspend fun receiveMessage(message: String)
+	suspend fun sendMessage(message: ChatMessage)
 
 	suspend fun getAllChat(): List<ChatMessage>
 

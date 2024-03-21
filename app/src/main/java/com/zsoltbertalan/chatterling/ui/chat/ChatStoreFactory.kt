@@ -6,6 +6,7 @@ import com.arkivanov.mvikotlin.core.store.Reducer
 import com.arkivanov.mvikotlin.core.store.Store
 import com.arkivanov.mvikotlin.core.store.StoreFactory
 import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineBootstrapper
+import com.zsoltbertalan.chatterling.domain.model.ChatElement
 import com.zsoltbertalan.chatterling.domain.model.ChatElement.ChatMessage
 import com.zsoltbertalan.chatterling.ui.chat.ChatStore.Intent
 import com.zsoltbertalan.chatterling.ui.chat.ChatStore.SideEffect
@@ -40,7 +41,7 @@ class ChatStoreFactory(
 		override fun State.reduce(msg: Message): State =
 			when (msg) {
 				is Message.ShowChat -> copy(chat = msg.chat)
-				is Message.AddMessage -> copy(chat = chat + msg.chatMessage)
+				is Message.AddElements -> copy(chat = chat + msg.newMessages)
 				is Message.ShowError -> copy(error = msg.throwable)
 			}
 	}
@@ -48,8 +49,8 @@ class ChatStoreFactory(
 }
 
 sealed class Message {
-	data class ShowChat(val chat: List<ChatMessage>) : Message()
-	data class AddMessage(val chatMessage: ChatMessage) : Message()
+	data class ShowChat(val chat: List<ChatElement>) : Message()
+	data class AddElements(val newMessages: List<ChatElement>) : Message()
 	data class ShowError(val throwable: Throwable) : Message()
 }
 

@@ -2,7 +2,6 @@ package com.zsoltbertalan.chatterling.ui.chat
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -107,10 +106,8 @@ private fun ChatScaffold(
 					modifier = Modifier
 						.weight(1.0f)
 						.fillMaxWidth(1f)
-						.border(3.dp, color = Colors.primary)
 						.padding(innerPadding),
 					content = {
-
 						items(
 							model.chat.size,
 							{ index -> model.chat[index] }
@@ -130,6 +127,8 @@ private fun ChatScaffold(
 									)
 								}
 								Spacer(modifier = Modifier.padding(vertical = 8.dp))
+							} else {
+								ChatTimestampRow(chatTimestamp = chatElement as ChatElement.ChatTimestamp)
 							}
 						}
 					}
@@ -173,7 +172,7 @@ fun ChatScreenPreview() {
 	val componentContext = DefaultComponentContext(lifecycle = LifecycleRegistry())
 	ChatScaffold(
 		ChatComponent(componentContext, defaultChatExecutor(), {}, {}),
-		ChatStore.State(chat = ChatMessageMother.createChatMessageList()),
+		ChatStore.State(chat = ChatMessageMother.createChatMessageList(1711041850594L)),
 		Initial
 	)
 }
@@ -185,7 +184,7 @@ fun ChatScreenErrorPreview() {
 	ChatScaffold(
 		ChatComponent(componentContext, defaultChatExecutor(), {}, {}),
 		ChatStore.State(
-			chat = ChatMessageMother.createChatMessageList(),
+			chat = ChatMessageMother.createChatMessageList(1711041850594L),
 			error = RuntimeException("Something went wrong")
 		),
 		Initial

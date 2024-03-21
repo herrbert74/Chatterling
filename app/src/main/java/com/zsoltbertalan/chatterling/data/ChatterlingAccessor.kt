@@ -13,12 +13,8 @@ class ChatterlingAccessor(
 	private val chatMessageDataSource: ChatMessageDataSource,
 ) : ChatterlingRepository {
 
-	override suspend fun sendMessage(message: String) {
-		chatMessageDataSource.insertMessages(listOf(ChatMessage(text = message)))
-	}
-
-	override suspend fun receiveMessage(message: String) {
-		chatMessageDataSource.insertMessages(listOf(ChatMessage(text = message, isReceivedMessage = true)))
+	override suspend fun sendMessage(message: ChatMessage) {
+		chatMessageDataSource.insertMessages(listOf(message))
 	}
 
 	override suspend fun getAllChat(): List<ChatMessage> {
@@ -28,8 +24,7 @@ class ChatterlingAccessor(
 	override suspend fun getChatMessageFlow(): Flow<List<ChatMessage>> {
 		return chatMessageDataSource.getMessageFlow()
 			.map { list ->
-				list
-					.map { dbo -> dbo.toChatMessage() }
+				list.map { dbo -> dbo.toChatMessage() }
 			}
 	}
 

@@ -106,6 +106,6 @@ fun SendMessageTextFieldPreview() {
 	SendMessageTextField(
 		Modifier,
 		ChatComponent(componentContext, defaultChatExecutor(), {}, {}),
-		ChatStore.State(chat = ChatMessageMother.createChatMessageList()),
+		ChatStore.State(chat = ChatMessageMother.createChatMessageList(1711041850594L)),
 	)
 }

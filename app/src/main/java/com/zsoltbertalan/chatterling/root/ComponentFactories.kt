@@ -1,6 +1,7 @@
 package com.zsoltbertalan.chatterling.root
 
 import com.zsoltbertalan.chatterling.domain.api.ChatterlingRepository
+import com.zsoltbertalan.chatterling.ext.CurrentTime
 import com.zsoltbertalan.chatterling.ui.chat.ChatComponent
 import com.zsoltbertalan.chatterling.ui.chat.ChatExecutor
 import kotlinx.coroutines.CoroutineDispatcher
@@ -17,7 +18,7 @@ internal fun createChatFactory(
 ): CreateChatComp = { childContext, finishHandler, output ->
 	ChatComponent(
 		componentContext = childContext,
-		chatExecutor = ChatExecutor(chatterlingRepository, mainContext, ioContext),
+		chatExecutor = ChatExecutor(chatterlingRepository, mainContext, ioContext, CurrentTime.Impl()),
 		output = output,
 		finishHandler = finishHandler,
 	)

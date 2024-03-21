@@ -8,13 +8,13 @@ import com.zsoltbertalan.chatterling.domain.model.ChatElement.ChatMessage
  */
 object ChatMessageMother {
 
-	fun createChatMessageList() = listOf(
-		createDefaultChatMessage(id = "0", text = "message1"),
-		createDefaultChatMessage(id = "1", text = "message2"),
-		createDefaultChatMessage(id = "2", text = "message3", isReceivedMessage = true),
-		createDefaultChatMessage(id = "3", text = "message4", isReceivedMessage = true),
-		createDefaultChatMessage(id = "4", text = "message5"),
-		createDefaultChatMessage(id = "5", text = "message6"),
+	fun createChatMessageList(timestamp: Long): List<ChatMessage> = listOf(
+		createDefaultChatMessage(id = "0", text = "message1", timestamp),
+		createDefaultChatMessage(id = "1", text = "message2", timestamp),
+		createDefaultChatMessage(id = "2", text = "message3", timestamp, isReceivedMessage = true),
+		createDefaultChatMessage(id = "3", text = "message4", timestamp, isReceivedMessage = true),
+		createDefaultChatMessage(id = "4", text = "message5", timestamp),
+		createDefaultChatMessage(id = "5", text = "message6", timestamp),
 	)
 
 }
@@ -22,10 +22,11 @@ object ChatMessageMother {
 private fun createDefaultChatMessage(
 	id: String = "",
 	text: String = "Hello",
+	timestamp: Long,
 	isReceivedMessage: Boolean = false,
 ): ChatMessage = ChatMessage(
 	id = id,
 	text = text,
-	timestamp = 0L,
+	timestamp = timestamp,
 	isReceivedMessage = isReceivedMessage,
 )

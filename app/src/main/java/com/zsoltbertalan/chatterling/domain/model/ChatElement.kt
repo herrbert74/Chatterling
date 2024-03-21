@@ -10,7 +10,7 @@ sealed class ChatElement : Parcelable {
 	data class ChatMessage(
 		val id: String = "",
 		val text: String = "",
-		val timestamp: Long = 0L,
+		val timestamp: Long = 0L, //milliseconds
 		val isReceivedMessage: Boolean = false,
 	) : ChatElement(), Parcelable
 

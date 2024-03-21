@@ -94,6 +94,7 @@ dependencies {
 	implementation(libs.androidx.coreKtx)
 	implementation(libs.decompose.core)
 	implementation(libs.decompose.extensionsJetBrains)
+	implementation(libs.kotlinx.datetime)
 	implementation(libs.kotlinResult.result)
 	implementation(libs.kotlinResult.coroutines)
 	implementation(libs.kotlin.parcelize.runtime)
