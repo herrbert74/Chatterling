@@ -144,12 +144,12 @@ private fun ChatScaffold(
 							if (chatElement is ChatElement.ChatMessage) {
 								if (chatElement.isReceivedMessage) {
 									ChatMessageRowOther(
-										Modifier.align(Alignment.End),
 										chatMessage = chatElement,
 										onItemClicked = component::onItemClicked,
 									)
 								} else {
 									ChatMessageRow(
+										Modifier.align(Alignment.End),
 										chatMessage = chatElement,
 										onItemClicked = component::onItemClicked,
 									)
