@@ -1,24 +1,23 @@
 package com.zsoltbertalan.chatterling.domain.model
 
-import com.arkivanov.essenty.parcelable.Parcelable
-import kotlinx.parcelize.Parcelize
+import kotlinx.serialization.Serializable
 
-@Parcelize
-sealed class ChatElement : Parcelable {
+@Serializable
+sealed class ChatElement {
 
-	@Parcelize
+	@Serializable
 	data class ChatMessage(
 		val id: String = "",
 		val text: String = "",
 		val timestamp: Long = 0L, //milliseconds
 		val isReceivedMessage: Boolean = false,
 		val isTailed:Boolean = false,
-	) : ChatElement(), Parcelable
+	) : ChatElement()
 
-	@Parcelize
+	@Serializable
 	data class ChatTimestamp(
 		val day: String = "",
 		val timestamp: String = "",
-	) : ChatElement(), Parcelable
+	) : ChatElement()
 
 }

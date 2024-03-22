@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
@@ -31,8 +32,10 @@ import com.arkivanov.decompose.DefaultComponentContext
 import com.arkivanov.essenty.lifecycle.LifecycleRegistry
 import com.zsoltbertalan.chatterling.R
 import com.zsoltbertalan.chatterling.design.Colors
+import com.zsoltbertalan.chatterling.design.smallDimensions
 import com.zsoltbertalan.chatterling.testhelper.ChatMessageMother
 import com.zsoltbertalan.chatterling.ui.defaultChatExecutor
+import kotlinx.collections.immutable.toImmutableList
 
 @Composable
 fun SendMessageTextField(
@@ -63,12 +66,9 @@ fun SendMessageTextField(
 				},
 			),
 			modifier = Modifier
-				.padding(horizontal = 16.dp, vertical = 8.dp)
-				.weight(0.9f)
-			/*.background(
-				color = Colors.background,
-				shape = CircleShape
-			)*/,
+				.padding(horizontal = smallDimensions.marginLarge, vertical = smallDimensions.marginNormal)
+				.weight(0.9f),
+			shape = RoundedCornerShape(32.dp),
 			isError = model.error != null,
 			maxLines = 5
 		)
@@ -80,7 +80,7 @@ fun SendMessageTextField(
 			},
 			enabled = message.isNotBlank(),
 			modifier = Modifier
-				.padding(end = 16.dp, top = 8.dp, bottom = 8.dp)
+				.padding(end = smallDimensions.marginLarge, top = smallDimensions.marginNormal, bottom = smallDimensions.marginNormal)
 				.weight(0.1f)
 				.then(
 					if (message.isNotBlank()) Modifier else Modifier.alpha(0.5F)
@@ -106,6 +106,6 @@ fun SendMessageTextFieldPreview() {
 	SendMessageTextField(
 		Modifier,
 		ChatComponent(componentContext, defaultChatExecutor(), {}, {}),
-		ChatStore.State(chat = ChatMessageMother.createChatMessageList(1711041850594L)),
+		ChatStore.State(chat = ChatMessageMother.createChatMessageList(1711041850594L).toImmutableList()),
 	)
 }

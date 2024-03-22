@@ -39,7 +39,8 @@ class ChatterlingRootComponent internal constructor(
 	private val stack = childStack(
 		source = navigation,
 		initialStack = { listOf(Configuration.Chat) },
-		handleBackButton = true,
+		saveStack = { null },
+		restoreStack = { null },
 		childFactory = ::createChild
 	)
 

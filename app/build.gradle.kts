@@ -3,7 +3,6 @@
 plugins {
 	alias(libs.plugins.android.application)
 	alias(libs.plugins.android.kotlin)
-	id("kotlin-parcelize")
 	alias(libs.plugins.ksp)
 	id("dagger.hilt.android.plugin")
 	alias(libs.plugins.realm)
@@ -95,9 +94,9 @@ dependencies {
 	implementation(libs.decompose.core)
 	implementation(libs.decompose.extensionsJetBrains)
 	implementation(libs.kotlinx.datetime)
+	implementation(libs.kotlinx.collections.immutable.jvm)
 	implementation(libs.kotlinResult.result)
 	implementation(libs.kotlinResult.coroutines)
-	implementation(libs.kotlin.parcelize.runtime)
 	implementation(libs.mvikotlin.core)
 	implementation(libs.mvikotlin.coroutines)
 	implementation(libs.mvikotlin.main)

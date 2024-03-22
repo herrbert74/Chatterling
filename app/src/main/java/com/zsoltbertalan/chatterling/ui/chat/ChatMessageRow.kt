@@ -30,11 +30,18 @@ fun ChatMessageRow(
 	onItemClicked: (ChatMessage) -> Unit,
 ) {
 
-	val tailedRoundedCornerShape = RoundedCornerShape(16.dp, 16.dp, 2.dp, 16.dp)
+	val tailedRoundedCornerShape = RoundedCornerShape(
+		smallDimensions.marginLarge,
+		smallDimensions.marginLarge,
+		smallDimensions.marginExtraSmall,
+		smallDimensions.marginLarge
+	)
 
-	Row(modifier = modifier
-		.padding(vertical = 8.dp, horizontal = 16.dp)
-		.fillMaxWidth(1f)){
+	Row(
+		modifier = modifier
+			.padding(horizontal = smallDimensions.marginLarge)
+			.fillMaxWidth(1f)
+	) {
 		Spacer(modifier.weight(0.2f))
 		Box(
 			modifier = modifier
@@ -47,9 +54,10 @@ fun ChatMessageRow(
 				.align(Alignment.CenterEnd)
 				.background(
 					color = Colors.primary,
-					shape = if (chatMessage.isTailed) tailedRoundedCornerShape else RoundedCornerShape(16.dp)
+					shape = if (chatMessage.isTailed) tailedRoundedCornerShape
+					else RoundedCornerShape(smallDimensions.marginLarge)
 				)
-				.padding(vertical = smallDimensions.marginNormal, horizontal = smallDimensions.marginLarge)
+				.padding(vertical = smallDimensions.marginSmall, horizontal = smallDimensions.marginNormal)
 				.testTag("ChatRow")
 			) {
 
@@ -59,7 +67,7 @@ fun ChatMessageRow(
 					style = ChatterlingTypography.bodyMedium.merge(color = Colors.onPrimary),
 					modifier = Modifier
 						.weight(1.0f)
-						.padding(vertical = smallDimensions.marginNormal, horizontal = smallDimensions.marginNormal)
+						.padding(vertical = smallDimensions.marginSmall, horizontal = smallDimensions.marginNormal)
 				)
 
 			}
@@ -95,7 +103,7 @@ fun TailedChatMessageRowPreview() {
 	Column {
 		ChatMessageRow(
 			Modifier.align(Alignment.End),
-			ChatMessage(text = "Not long text"),
+			ChatMessage(text = "Not long text", isTailed = true),
 		) {}
 	}
 }

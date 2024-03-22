@@ -14,7 +14,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import com.babestudios.base.compose.design.smallDimensions
 import com.zsoltbertalan.chatterling.design.ChatterlingTypography
 import com.zsoltbertalan.chatterling.design.Colors
@@ -23,10 +22,15 @@ import com.zsoltbertalan.chatterling.domain.model.ChatElement.ChatMessage
 @Composable
 fun ChatMessageRowOther(chatMessage: ChatMessage, onItemClicked: (ChatMessage) -> Unit) {
 
-	val tailedRoundedCornerShape = RoundedCornerShape(16.dp, 16.dp, 16.dp, 2.dp)
+	val tailedRoundedCornerShape = RoundedCornerShape(
+		smallDimensions.marginLarge,
+		smallDimensions.marginLarge,
+		smallDimensions.marginLarge,
+		smallDimensions.marginExtraSmall,
+	)
 	Box(
 		modifier = Modifier
-			.padding(vertical = 8.dp, horizontal = 16.dp)
+			.padding(horizontal = smallDimensions.marginNormal)
 			.fillMaxWidth(0.8f)
 	) {
 		Row(modifier = Modifier
@@ -34,9 +38,10 @@ fun ChatMessageRowOther(chatMessage: ChatMessage, onItemClicked: (ChatMessage) -
 			.width(IntrinsicSize.Max)
 			.background(
 				color = Colors.surfaceContainer,
-				shape = if (chatMessage.isTailed) tailedRoundedCornerShape else RoundedCornerShape(16.dp)
+				shape = if (chatMessage.isTailed) tailedRoundedCornerShape
+				else RoundedCornerShape(smallDimensions.marginLarge)
 			)
-			.padding(vertical = smallDimensions.marginNormal, horizontal = smallDimensions.marginLarge)
+			.padding(vertical = smallDimensions.marginSmall, horizontal = smallDimensions.marginNormal)
 			.testTag("ChatRow")
 		) {
 
@@ -73,6 +78,6 @@ fun ChatMessageRowOtherLongPreview() {
 @Composable
 fun TailedChatMessageRowOtherPreview() {
 	ChatMessageRowOther(
-		ChatMessage(text = "Not long text"),
+		ChatMessage(text = "Not long text", isTailed = true),
 	) {}
 }

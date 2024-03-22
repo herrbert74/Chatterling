@@ -45,9 +45,11 @@ import com.arkivanov.essenty.lifecycle.LifecycleRegistry
 import com.zsoltbertalan.chatterling.R
 import com.zsoltbertalan.chatterling.design.ChatterlingTypography
 import com.zsoltbertalan.chatterling.design.Colors
+import com.zsoltbertalan.chatterling.design.smallDimensions
 import com.zsoltbertalan.chatterling.domain.model.ChatElement
 import com.zsoltbertalan.chatterling.testhelper.ChatMessageMother
 import com.zsoltbertalan.chatterling.ui.defaultChatExecutor
+import kotlinx.collections.immutable.toImmutableList
 
 @Composable
 fun ChatScreen(component: ChatComp) {
@@ -138,7 +140,7 @@ private fun ChatScaffold(
 					content = {
 						items(
 							model.chat.size,
-							{ index -> model.chat[index] }
+							{ index -> index }
 						) { index ->
 							val chatElement = model.chat[index]
 							if (chatElement is ChatElement.ChatMessage) {
@@ -154,7 +156,7 @@ private fun ChatScaffold(
 										onItemClicked = component::onItemClicked,
 									)
 								}
-								Spacer(modifier = Modifier.padding(vertical = 8.dp))
+								Spacer(modifier = Modifier.padding(vertical = smallDimensions.marginSmall))
 							} else {
 								ChatTimestampRow(chatTimestamp = chatElement as ChatElement.ChatTimestamp)
 							}
@@ -197,7 +199,7 @@ fun ChatScreenPreview() {
 	val componentContext = DefaultComponentContext(lifecycle = LifecycleRegistry())
 	ChatScaffold(
 		ChatComponent(componentContext, defaultChatExecutor(), {}, {}),
-		ChatStore.State(chat = ChatMessageMother.createChatMessageList(1711041850594L))
+		ChatStore.State(chat = ChatMessageMother.createChatMessageList(1711041850594L).toImmutableList())
 	)
 }
 
@@ -208,7 +210,7 @@ fun ChatScreenErrorPreview() {
 	ChatScaffold(
 		ChatComponent(componentContext, defaultChatExecutor(), {}, {}),
 		ChatStore.State(
-			chat = ChatMessageMother.createChatMessageList(1711041850594L),
+			chat = ChatMessageMother.createChatMessageList(1711041850594L).toImmutableList(),
 			error = RuntimeException("Something went wrong")
 		)
 	)

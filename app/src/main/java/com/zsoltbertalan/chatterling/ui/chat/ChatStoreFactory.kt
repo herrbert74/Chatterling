@@ -1,7 +1,6 @@
 package com.zsoltbertalan.chatterling.ui.chat
 
 import com.arkivanov.essenty.statekeeper.StateKeeper
-import com.arkivanov.essenty.statekeeper.consume
 import com.arkivanov.mvikotlin.core.store.Reducer
 import com.arkivanov.mvikotlin.core.store.Store
 import com.arkivanov.mvikotlin.core.store.StoreFactory
@@ -9,6 +8,7 @@ import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineBootstrapper
 import com.zsoltbertalan.chatterling.domain.model.ChatElement
 import com.zsoltbertalan.chatterling.ui.chat.ChatStore.Intent
 import com.zsoltbertalan.chatterling.ui.chat.ChatStore.State
+import kotlinx.collections.immutable.toImmutableList
 
 class ChatStoreFactory(
 	private val storeFactory: StoreFactory,
@@ -18,13 +18,13 @@ class ChatStoreFactory(
 	fun create(stateKeeper: StateKeeper): ChatStore =
 		object : ChatStore, Store<Intent, State, Nothing> by storeFactory.create(
 			name = "ChatStore",
-			initialState = stateKeeper.consume(key = "ChatStore") ?: State(),
+			initialState = stateKeeper.consume(key = "ChatStore", strategy = State.serializer()) ?: State(),
 			bootstrapper = ChatBootstrapper(),
 			executorFactory = { chatExecutor },
 			reducer = ChatReducer
 		) {
 		}.also {
-			stateKeeper.register(key = "ChatStore") {
+			stateKeeper.register(key = "ChatStore", strategy = State.serializer()) {
 				it.state.copy()
 			}
 		}
@@ -38,13 +38,13 @@ class ChatStoreFactory(
 	private object ChatReducer : Reducer<State, Message> {
 		override fun State.reduce(msg: Message): State =
 			when (msg) {
-				is Message.ShowChat -> copy(chat = msg.chat)
-				is Message.AddElements -> copy(chat = chat + msg.newMessages)
+				is Message.ShowChat -> copy(chat = msg.chat.toImmutableList())
+				is Message.AddElements -> copy(chat = (chat + msg.newMessages).toImmutableList())
 				is Message.RemoveTailFromLastMessage -> {
 					val newList = chat.toMutableList()
 					val chatMessage = (newList.removeLast() as ChatElement.ChatMessage).copy(isTailed = false)
 					newList.add(chatMessage)
-					copy(chat = newList)
+					copy(chat = newList.toImmutableList())
 				}
 				is Message.ShowError -> copy(error = msg.throwable)
 			}
